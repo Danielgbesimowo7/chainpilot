@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "DM Serif Text", ui-serif, Georgia, serif;
+
+  --color-page: #161616;
+  --color-card: #101010;
+  --color-panel: #171717;
+  --color-surface: #272727;
+  --color-brand: #f24800;
+  --color-success: #00c896;
+  --color-warning: #f5a623;
+  --color-danger: #ff4d4d;
+  --color-governance: #7c5cfc;
+  --color-fg: #e6edf3;
+  --color-soft: #cfcfcf;
+  --color-muted: #818181;
+  --color-line: rgba(170, 206, 255, 0.11);
+
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-float-slow: float 9s ease-in-out infinite;
+  --animate-ping-ring: ping-ring 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  --animate-shimmer: shimmer 2.2s ease-in-out infinite;
+  --animate-beam: beam-breathe 4.5s ease-in-out infinite;
+  --animate-spot: spot-sway 9s ease-in-out infinite;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  @keyframes ping-ring {
+    0% { transform: scale(0.8); opacity: 0.8; }
+    80%, 100% { transform: scale(2.1); opacity: 0; }
+  }
+  @keyframes shimmer {
+    0%, 100% { opacity: 0.45; }
+    50% { opacity: 1; }
+  }
+  @keyframes beam-breathe {
+    0%, 100% { opacity: 0.75; filter: brightness(0.95); }
+    45% { opacity: 1; filter: brightness(1.25); }
+    60% { opacity: 0.88; filter: brightness(1.05); }
+  }
+  @keyframes spot-sway {
+    0%, 100% { transform: rotate(-1.5deg); opacity: 0.8; }
+    50% { transform: rotate(1.5deg); opacity: 1; }
+  }
+}
+
+@layer base {
+  html { scroll-behavior: smooth; background: var(--color-page); }
+  body {
+    margin: 0;
+    background: var(--color-page);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  ::selection { background: rgba(242, 72, 0, 0.45); color: #fff; }
+  :focus-visible { outline: 2px solid var(--color-brand); outline-offset: 3px; border-radius: 8px; }
+}
+
+@layer components {
+  .text-gradient {
+    background-image: linear-gradient(90deg, #999 24%, #c7c7c7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .dot-pattern {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1.2px, transparent 1.4px);
+    background-size: 14px 14px;
+  }
+  .btn-border { border: 2px solid var(--color-line); }
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+  }
+  .mask-fade-y {
+    -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent);
+    mask-image: linear-gradient(180deg, #000 55%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+
+@keyframes shine {
+  from { background-position: 100% 0; }
+  to { background-position: -100% 0; }
+}
