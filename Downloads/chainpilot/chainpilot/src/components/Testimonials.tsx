@@ -15,21 +15,17 @@ const ROW2: T[] = [
   { quote: '“The anomaly alerts caught unusual outflows before execution. That single layer of protection gave our treasury team far more confidence moving capital”', name: 'Priya Solis', role: 'Core Contributor at LayerFund', tone: 'sand' },
 ]
 
-function Card({ t, i, className }: { t: T; i: number; className: string }) {
+function Card({ t }: { t: T }) {
   return (
     <motion.figure
-      initial={{ opacity: 0, y: 36 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.25 }}
-      transition={{ duration: 0.8, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
       whileHover={{ y: -4 }}
-      className={`group flex flex-col justify-between gap-6 rounded-2xl bg-card p-6 ring-1 ring-white/[0.03] transition-shadow hover:ring-white/[0.09] ${className}`}
+      className="group flex w-[300px] shrink-0 flex-col justify-between gap-6 whitespace-normal rounded-2xl bg-card p-5 ring-1 ring-white/[0.03] transition-shadow hover:ring-white/[0.09] sm:w-[440px] sm:p-6 lg:w-[560px]"
     >
-      <blockquote className="text-xl italic leading-9 text-[#9a9a9a] transition-colors duration-500 group-hover:text-soft md:text-2xl">{t.quote}</blockquote>
+      <blockquote className="text-base italic leading-7 md:leading-9 sm:text-xl text-[#9a9a9a] transition-colors duration-500 group-hover:text-soft md:text-2xl">{t.quote}</blockquote>
       <figcaption className="flex items-center gap-3 border-t border-white/[0.07] pt-6">
         <Avatar name={t.name} tone={t.tone} size={60} />
         <div>
-          <div className={`text-xl text-soft md:text-2xl ${t.caps ? 'uppercase' : ''}`}>{t.name}</div>
+          <div className={`text-base text-soft sm:text-xl md:text-2xl ${t.caps ? 'uppercase' : ''}`}>{t.name}</div>
           <div className="text-base text-muted">{t.role}</div>
         </div>
       </figcaption>
@@ -37,17 +33,33 @@ function Card({ t, i, className }: { t: T; i: number; className: string }) {
   )
 }
 
+function MarqueeRow({ items, reverse, duration }: { items: T[]; reverse?: boolean; duration: number }) {
+  // Two identical halves; the track slides exactly one half, so the loop is seamless.
+  return (
+    <div className="group/row overflow-hidden">
+      <div
+        className="flex w-max motion-reduce:!animate-none group-hover/row:[animation-play-state:paused]"
+        style={{ animation: `marquee ${duration}s linear infinite ${reverse ? 'reverse' : 'normal'}` }}
+      >
+        {[0, 1].map((half) => (
+          <div key={half} className="flex shrink-0 gap-6 pr-6" aria-hidden={half === 1 || undefined}>
+            {items.map((t) => <Card key={t.name} t={t} />)}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export function Testimonials() {
   return (
-    <section id="testimonials" className="relative px-5 py-[72px] md:px-8">
-      <SectionHeader pill={<Pill>We are top-notch and our users know it</Pill>} title="What Our Users Say About Our Product" />
-      <div className="mask-fade-x mx-auto mt-14 max-w-[1200px] space-y-6 px-1 lg:px-0">
-        <div className="grid gap-6 md:grid-cols-2">
-          {ROW1.map((t, i) => <Card key={t.name} t={t} i={i} className="" />)}
-        </div>
-        <div className="grid gap-6 md:grid-cols-3">
-          {ROW2.map((t, i) => <Card key={t.name} t={t} i={i + 2} className="" />)}
-        </div>
+    <section id="testimonials" className="relative overflow-hidden py-[72px]">
+      <div className="px-5 md:px-8">
+        <SectionHeader pill={<Pill>We are top-notch and our users know it</Pill>} title="What Our Users Say About Our Product" />
+      </div>
+      <div className="mask-fade-x mt-14 space-y-6">
+        <MarqueeRow items={ROW1} duration={50} />
+        <MarqueeRow items={ROW2} reverse duration={60} />
       </div>
     </section>
   )

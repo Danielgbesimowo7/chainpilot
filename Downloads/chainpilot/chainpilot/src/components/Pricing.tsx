@@ -49,8 +49,8 @@ export function Pricing() {
   return (
     <section id="pricing" className="relative scroll-mt-24 px-5 py-[72px] md:px-8">
       <div className="mx-auto flex max-w-[771px] flex-col items-center gap-6 text-center">
-        <Reveal><h2 className="text-gradient text-4xl font-medium md:text-5xl">Simple, Transparent Pricing</h2></Reveal>
-        <Reveal delay={0.08}><p className="text-xl leading-9 text-muted md:text-2xl">All plans include a 14-day free trial.</p></Reveal>
+        <Reveal><h2 className="text-gradient text-[28px] font-medium sm:text-4xl md:text-5xl">Simple, Transparent Pricing</h2></Reveal>
+        <Reveal delay={0.08}><p className="text-base leading-7 text-muted sm:text-xl md:text-2xl">All plans include a 14-day free trial.</p></Reveal>
         <Reveal delay={0.16}>
           <div role="group" aria-label="Billing period" className="relative flex gap-2 rounded-[11px] bg-surface p-2">
             {([['Monthly', false], ['Yearly', true]] as const).map(([label, isYearly]) => {
@@ -81,7 +81,6 @@ export function Pricing() {
             >
               {p.popular && (
                 <>
-                  <motion.span className="pointer-events-none absolute -inset-px rounded-3xl" animate={{ boxShadow: ['0 0 0 0 rgba(242,72,0,0)', '0 0 50px -8px rgba(242,72,0,0.45)', '0 0 0 0 rgba(242,72,0,0)'] }} transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }} />
                   <span className="absolute left-1/2 top-[-17px] -translate-x-1/2 whitespace-nowrap rounded-[15px] bg-brand px-[101px] py-1 text-base font-semibold text-white max-sm:px-12">MOST POPULAR</span>
                 </>
               )}

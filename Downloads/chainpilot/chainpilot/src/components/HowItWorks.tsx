@@ -31,7 +31,7 @@ export function HowItWorks() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.8, delay: (i % 2) * 0.12, ease: [0.16, 1, 0.3, 1] }}
-            className="dot-pattern relative flex min-h-[527px] flex-col overflow-hidden rounded-3xl bg-card ring-1 ring-white/[0.03]"
+            className="dot-pattern relative flex flex-col lg:min-h-[527px] overflow-hidden rounded-3xl bg-card ring-1 ring-white/[0.03]"
           >
             <div className="flex gap-3 p-6">
               <motion.span
@@ -42,12 +42,12 @@ export function HowItWorks() {
                 {s.n}
               </motion.span>
               <div>
-                <h3 className="text-2xl font-medium leading-[40px] text-soft">{s.title}</h3>
-                <p className="mt-1 max-w-[420px] text-xl leading-[30px] text-muted">{s.body}</p>
+                <h3 className="text-xl font-medium leading-8 text-soft md:text-2xl md:leading-[40px]">{s.title}</h3>
+                <p className="mt-1 max-w-[420px] text-base leading-6 md:text-xl md:leading-[30px] text-muted">{s.body}</p>
               </div>
             </div>
-            <div className="mt-auto">
-              <ScaleToFit width={588} height={377}>{s.art}</ScaleToFit>
+            <div className="mt-3 lg:mt-auto">
+              <ScaleToFit width={588} height={377} minScale={0.74}>{s.art}</ScaleToFit>
             </div>
           </motion.article>
         ))}

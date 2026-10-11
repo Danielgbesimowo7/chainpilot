@@ -19,14 +19,14 @@ function FeatureCard({ title, body, art, w, h, className = '', index }: CardProp
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.8, delay: (index % 3) * 0.1, ease: [0.16, 1, 0.3, 1] }}
       whileHover={{ y: -4 }}
-      className={`group dot-pattern relative flex flex-col overflow-hidden rounded-3xl bg-card ring-1 ring-white/[0.03] transition-shadow duration-500 hover:shadow-[0_20px_60px_-20px_rgba(242,72,0,0.25)] hover:ring-white/[0.08] ${className}`}
+      className={`group dot-pattern relative flex flex-col overflow-hidden rounded-3xl bg-card ring-1 ring-white/[0.03] transition-[box-shadow] duration-500 hover:ring-white/[0.08] ${className}`}
     >
       <div className="px-0 pt-0">
-        <ScaleToFit width={w} height={h}>{art}</ScaleToFit>
+        <ScaleToFit width={w} height={h} minScale={w > 500 ? 0.74 : 0}>{art}</ScaleToFit>
       </div>
       <div className="px-6 pb-6 pt-1">
-        <h3 className="text-2xl font-medium text-soft">{title}</h3>
-        <p className="mt-3 max-w-[420px] text-xl leading-[30px] text-muted">{body}</p>
+        <h3 className="text-xl font-medium text-soft md:text-2xl">{title}</h3>
+        <p className="mt-2 max-w-[420px] text-base leading-6 md:mt-3 md:text-xl md:leading-[30px] text-muted">{body}</p>
       </div>
     </motion.article>
   )

@@ -24,7 +24,7 @@ export function Avatar({ name, tone = 'lavender', size = 32, ring = false }: { n
       className={`inline-flex shrink-0 items-center justify-center rounded-full font-semibold ${ring ? 'ring-2 ring-[#1c1c1c]' : ''}`}
       style={{ width: size, height: size, fontSize: size * 0.36, background: `linear-gradient(145deg, ${a}, ${b})`, color: dark ? '#e9e9e9' : '#2b2b33' }}
     >
-      {initials(name)}
+      {size >= 24 ? initials(name) : null}
     </span>
   )
 }

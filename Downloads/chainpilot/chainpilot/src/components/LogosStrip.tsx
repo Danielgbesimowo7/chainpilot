@@ -20,7 +20,7 @@ const LOGOS: { name: string; mark: ReactNode; weight?: string }[] = [
 function Stat({ children, label, delay }: { children: ReactNode; label: string; delay: number }) {
   return (
     <Reveal delay={delay} className="text-center">
-      <div className="text-4xl font-medium text-brand md:text-[44px] md:leading-[52px]">{children}</div>
+      <div className="text-3xl font-medium text-brand md:text-[44px] md:leading-[52px]">{children}</div>
       <div className="mx-auto mt-1 max-w-[190px] text-base leading-7 text-muted md:text-xl md:leading-[29px]">{label}</div>
     </Reveal>
   )

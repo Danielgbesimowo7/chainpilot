@@ -47,7 +47,7 @@ export function Hero() {
         </motion.div>
 
         <div className="flex flex-col items-center gap-6">
-          <h1 className="text-4xl font-medium leading-[1.1] sm:text-5xl md:text-6xl lg:text-[64px]">
+          <h1 className="text-[32px] font-medium leading-[1.1] sm:text-5xl md:text-6xl lg:text-[64px]">
             <span>
               {WORDS.map((w, i) => (
                 <motion.span
@@ -71,7 +71,7 @@ export function Hero() {
             </motion.span>
           </h1>
           <motion.p
-            className="max-w-[637px] text-lg leading-8 text-muted md:text-2xl md:leading-9"
+            className="max-w-[637px] text-base leading-7 text-muted sm:text-lg md:text-2xl md:leading-9"
             initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.95 }}
           >
             ChainPilot unifies treasury operations for DAOs and Web3 teams, approvals, payroll, risk monitoring, and audit trails across 5 chains.
@@ -93,7 +93,10 @@ export function Hero() {
       >
         <LightTraces side="left" />
         <LightTraces side="right" />
-        <ScaleToFit width={DASHBOARD_SIZE.width} height={DASHBOARD_SIZE.height}>
+        {/* glow spilling out of the dashboard's side edges where the pipes plug in */}
+        <div aria-hidden="true" className="pointer-events-none absolute -left-[11px] top-[119px] z-20 hidden h-[376px] w-[23px] rounded-full bg-[#ff5a14] opacity-80 blur-[22px] mix-blend-screen xl:block" />
+        <div aria-hidden="true" className="pointer-events-none absolute -right-[11px] top-[119px] z-20 hidden h-[376px] w-[23px] rounded-full bg-[#ff5a14] opacity-80 blur-[22px] mix-blend-screen xl:block" />
+        <ScaleToFit width={DASHBOARD_SIZE.width} height={DASHBOARD_SIZE.height} maxWidth={1098} cropHeight={897} className="relative z-10">
           <Dashboard />
         </ScaleToFit>
         <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[220px] bg-gradient-to-b from-transparent via-page/80 to-page" />

@@ -24,17 +24,17 @@ export function Footer() {
         <div className="flex flex-col gap-12 lg:flex-row lg:justify-between">
           <motion.div className="max-w-[379px]" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}>
             <Logo size={40} textClass="text-[32px]" />
-            <p className="mt-4 text-2xl font-medium leading-9 text-muted">Cross-chain treasury management for DAOs, Protocol teams and Web3-native organisations.</p>
+            <p className="mt-4 text-lg font-medium leading-8 md:text-2xl md:leading-9 text-muted">Cross-chain treasury management for DAOs, Protocol teams and Web3-native organisations.</p>
           </motion.div>
 
           <div className="flex flex-col items-start gap-12 lg:items-end">
             <div className="flex flex-wrap gap-x-16 gap-y-10">
               {COLS.map((c, i) => (
                 <motion.nav key={c.title} aria-label={c.title} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.1 + i * 0.1 }}>
-                  <h3 className="text-2xl font-semibold text-[#dedede]">{c.title}</h3>
+                  <h3 className="text-xl font-semibold text-[#dedede] md:text-2xl">{c.title}</h3>
                   <ul className="mt-6 flex flex-col gap-4">
                     {c.links.map((l) => (
-                      <li key={l}><a href="#" className="text-2xl text-muted transition-colors hover:text-white">{l}</a></li>
+                      <li key={l}><a href="#" className="text-lg text-muted md:text-2xl transition-colors hover:text-white">{l}</a></li>
                     ))}
                   </ul>
                 </motion.nav>
@@ -51,7 +51,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 h-px bg-white/[0.06]" />
-        <div className="mt-12 flex flex-col justify-between gap-3 text-xl text-muted md:flex-row">
+        <div className="mt-12 flex flex-col justify-between gap-3 text-base text-muted md:text-xl md:flex-row">
           <p>© 2026 Chain Pilot. All rights reserved.</p>
           <p><a href="#" className="hover:text-white">Privacy Policy</a>. <a href="#" className="hover:text-white">Terms of Service</a>.</p>
         </div>

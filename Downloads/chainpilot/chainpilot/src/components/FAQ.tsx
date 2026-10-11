@@ -16,21 +16,21 @@ export function FAQ() {
   return (
     <section id="faq" className="relative scroll-mt-24 px-5 py-[72px] md:px-8">
       <div className="mx-auto grid max-w-[1200px] gap-10 lg:grid-cols-[518px_1fr] lg:gap-[72px]">
-        <div className="flex flex-col justify-between gap-10">
-          <Reveal>
-            <h2 className="text-4xl font-medium leading-[1.15] md:text-5xl">
+        <div className="contents lg:flex lg:flex-col lg:justify-between lg:gap-10">
+          <Reveal className="order-1 lg:order-none">
+            <h2 className="text-[28px] font-medium leading-[1.15] sm:text-4xl md:text-5xl">
               <span className="text-gradient">Frequently </span><span className="text-[#e6e6e6]">Asked</span>
               <br /><span className="text-gradient">Questions</span>
             </h2>
           </Reveal>
-          <Reveal delay={0.12} className="rounded-xl bg-card p-6">
-            <h3 className="text-2xl font-medium text-soft md:text-[28px]">Still have <span className="text-[#e6e6e6]">questions to ask?</span></h3>
-            <p className="mt-4 max-w-[390px] text-xl leading-9 text-muted">You can’t find answers to your questions? Send us a mail and we will get back to you as soon as possible</p>
+          <Reveal delay={0.12} className="order-3 rounded-xl bg-card p-6 lg:order-none">
+            <h3 className="text-xl font-medium text-soft md:text-[28px]">Still have <span className="text-[#e6e6e6]">questions to ask?</span></h3>
+            <p className="mt-4 max-w-[390px] text-base leading-7 text-muted md:text-xl md:leading-9">You can’t find answers to your questions? Send us a mail and we will get back to you as soon as possible</p>
             <Button href="mailto:hello@chainpilot.app" className="mt-8 !h-[46px] px-3.5 text-sm">Send us a mail</Button>
           </Reveal>
         </div>
 
-        <ul className="flex flex-col gap-4">
+        <ul className="order-2 flex flex-col gap-4 lg:order-none">
           {ITEMS.map((it, i) => {
             const isOpen = open === i
             return (
@@ -39,7 +39,7 @@ export function FAQ() {
                   <h3>
                     <button
                       type="button" aria-expanded={isOpen} aria-controls={`faq-${i}`} onClick={() => setOpen(isOpen ? null : i)}
-                      className="flex w-full items-center justify-between gap-4 py-6 text-left text-xl font-normal text-soft md:text-2xl"
+                      className="flex w-full items-center justify-between gap-4 py-5 text-left text-base font-normal sm:py-6 sm:text-xl text-soft md:text-2xl"
                     >
                       {it.q}
                       <motion.svg animate={{ rotate: isOpen ? 0 : -90 }} transition={{ duration: 0.3 }} width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8a8a8a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="shrink-0" aria-hidden="true">
@@ -56,7 +56,7 @@ export function FAQ() {
                         className="overflow-hidden"
                       >
                         <div className="mb-6 border-t border-white/[0.07] pt-6">
-                          <p className="rounded-xl bg-card p-3 text-xl leading-9 text-muted md:text-2xl">{it.a}</p>
+                          <p className="rounded-xl bg-card p-3 text-base leading-7 text-muted sm:text-xl md:text-2xl">{it.a}</p>
                         </div>
                       </motion.div>
                     )}
