@@ -3,7 +3,7 @@ import { Button } from './ui/Button'
 import { Reveal } from './ui/Reveal'
 import { ScaleToFit } from './ui/ScaleToFit'
 import { Dashboard, DASHBOARD_SIZE } from './Dashboard'
-import { EdgeGlow, VerticalBeam } from './Beams'
+import { DashboardGlow, SideGlow, VerticalBeam } from './Beams'
 
 export function FinalCTA() {
   return (
@@ -27,13 +27,9 @@ export function FinalCTA() {
         className="relative mx-auto mt-16 w-full max-w-[910px] lg:absolute lg:bottom-auto lg:left-auto lg:right-[calc(50%-593px)] lg:top-[393px] lg:mt-0"
         initial={{ opacity: 0, y: 70 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
       >
-        <div className="hidden lg:block"><VerticalBeam /></div>
-        {/* light spilling around the dashboard, positioned like the design's blurred ellipses */}
-        <motion.div aria-hidden="true" className="pointer-events-none absolute left-[539px] top-[-76px] hidden h-[130px] w-[1330px] lg:block" style={{ mixBlendMode: 'plus-lighter', background: 'radial-gradient(closest-side, rgba(242,84,12,0.5), rgba(242,72,0,0.18) 55%, transparent 100%)' }} animate={{ opacity: [0.75, 1, 0.8, 1, 0.75] }} transition={{ duration: 4.4, repeat: Infinity, ease: 'easeInOut' }} />
-        <motion.div aria-hidden="true" className="pointer-events-none absolute left-[648px] top-[-73px] hidden h-[130px] w-[350px] lg:block" style={{ mixBlendMode: 'plus-lighter', background: 'radial-gradient(closest-side, rgba(255,110,24,0.55), rgba(242,72,0,0.2) 55%, transparent 100%)' }} animate={{ opacity: [0.7, 1, 0.78, 0.95, 0.7] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }} />
-        <EdgeGlow side="left" />
-        <EdgeGlow side="right" />
-        <div aria-hidden="true" className="pointer-events-none absolute inset-x-3 top-0 z-20 h-px bg-gradient-to-r from-transparent via-[#ff9a50] to-transparent" />
+        <DashboardGlow />
+        <VerticalBeam />
+        <SideGlow />
         <ScaleToFit width={DASHBOARD_SIZE.width} height={DASHBOARD_SIZE.height} maxWidth={910} cropHeight={897} className="relative z-10">
           <Dashboard />
         </ScaleToFit>

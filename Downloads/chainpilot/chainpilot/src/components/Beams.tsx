@@ -107,59 +107,78 @@ const BLEND = { mixBlendMode: 'plus-lighter' as const }
 /* Horizontal falloff shaped like a gaussian. Used as a mask so the light has no edge at all,
    and so no CSS blur filter is needed (large blur filters band and stair-step on some GPUs). */
 const SOFT_X = 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.04) 10%, rgba(0,0,0,0.16) 22%, rgba(0,0,0,0.42) 35%, rgba(0,0,0,0.8) 44%, #000 50%, rgba(0,0,0,0.8) 56%, rgba(0,0,0,0.42) 65%, rgba(0,0,0,0.16) 78%, rgba(0,0,0,0.04) 90%, transparent 100%)'
-const SOFT_Y = 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 18%, #000 40%, #000 62%, rgba(0,0,0,0.3) 84%, transparent 100%)'
 const mask = (m: string) => ({ maskImage: m, WebkitMaskImage: m })
 
+/** Column of light that shoots up from behind the dashboard in the closing CTA.
+ *  Independent layers (all additive, all gradient-masked so nothing has an edge):
+ *  atmosphere -> outer body -> orange body -> flare at the base -> inner glow -> white-hot core.
+ *  The anchor sits on the dashboard's top edge at the beam's x (design: x=603 inside the 910px dashboard). */
 export function VerticalBeam() {
+  const col = (w: number, h: number, gradient: string, extra?: object) => ({
+    left: -w / 2, top: 34 - h, width: w, height: h, ...BLEND, ...mask(SOFT_X), background: gradient, ...extra,
+  })
   return (
-    <div aria-hidden="true" className="pointer-events-none absolute left-[585px] top-[-392px] z-0 h-[426px] w-[37px]">
-      {/* faint wide halo around the beam (Ellipse 25) */}
+    <div aria-hidden="true" className="pointer-events-none absolute left-[603px] top-0 z-0 hidden lg:block">
+      {/* 1 - outer atmospheric glow */}
       <motion.div
-        className="absolute left-[-130px] top-[-40px] h-[330px] w-[297px]"
-        style={{ ...BLEND, background: 'radial-gradient(closest-side, rgba(242,72,0,0.3) 0%, rgba(242,72,0,0.14) 45%, transparent 100%)' }}
-        animate={{ opacity: [0.75, 1, 0.82, 1, 0.75] }}
+        className="absolute"
+        style={{ left: -150, top: -330, width: 300, height: 380, ...BLEND, background: 'radial-gradient(ellipse 50% 62% at 50% 100%, rgba(242,72,0,0.5) 0%, rgba(242,72,0,0.2) 45%, rgba(242,72,0,0.05) 75%, transparent 100%)' }}
+        animate={{ opacity: [0.8, 1, 0.85, 1, 0.8] }}
         transition={{ duration: 4.2, repeat: Infinity, ease: 'easeInOut' }}
-      />
-      {/* orange orb at the base of the beam (Ellipse 22) */}
-      <motion.div
-        className="absolute left-[-165px] top-[116px] h-[383px] w-[371px]"
-        style={{ ...BLEND, background: 'radial-gradient(closest-side at 50% 49%, rgba(228,80,26,0.95) 0%, rgba(222,76,26,0.7) 20%, rgba(180,58,20,0.36) 46%, rgba(110,38,14,0.1) 76%, transparent 100%)' }}
-        animate={{ opacity: [0.85, 1, 0.9, 1, 0.85] }}
-        transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }}
       />
 
       {/* the beam itself: ignites upward once, then breathes */}
       <motion.div
-        className="absolute inset-0 origin-bottom"
+        className="absolute left-0 top-0 h-0 w-0 origin-bottom"
+        style={{ transformOrigin: '0 34px' }}
         initial={{ scaleY: 0, opacity: 0 }}
         whileInView={{ scaleY: 1, opacity: 1 }}
         viewport={{ once: true, amount: 0.1 }}
         transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
       >
-        {/* orange body: hottest at the foot, cooling to dark at the tip */}
+        {/* 2 - wide body, fades out toward the tip */}
+        <div style={col(130, 426, 'linear-gradient(to top, rgba(242,72,0,0.75) 0%, rgba(242,72,0,0.5) 30%, rgba(242,72,0,0.3) 62%, rgba(242,72,0,0.12) 100%)')} className="absolute" />
+        {/* wider foot: the beam flares out near the dashboard */}
+        <div style={col(190, 220, 'linear-gradient(to top, rgba(255,96,16,0.75) 0%, rgba(242,72,0,0.4) 45%, transparent 100%)')} className="absolute" />
+        {/* 3 - vivid orange body */}
         <motion.div
-          className="absolute inset-y-0 left-1/2 w-[120px] -translate-x-1/2"
-          style={{ ...BLEND, ...mask(SOFT_X), background: 'linear-gradient(to top, #e8531a 0%, rgba(228,80,26,0.9) 16%, rgba(196,66,22,0.58) 44%, rgba(140,48,18,0.3) 74%, rgba(100,34,14,0.08) 100%)' }}
-          animate={{ opacity: [0.88, 1, 0.92, 1, 0.88] }}
+          className="absolute"
+          style={col(70, 426, 'linear-gradient(to top, rgba(255,128,36,1) 0%, rgba(255,110,24,0.95) 28%, rgba(250,90,16,0.7) 58%, rgba(235,72,10,0.5) 86%, rgba(235,72,10,0.25) 100%)')}
+          animate={{ opacity: [0.9, 1, 0.94, 1, 0.9] }}
           transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
         />
-        {/* pale core */}
+        {/* 4 - saturated inner glow */}
         <motion.div
-          className="absolute inset-y-0 left-1/2 w-[56px] -translate-x-1/2"
-          style={{ ...BLEND, ...mask(SOFT_X), background: 'linear-gradient(to top, rgba(215,175,155,0.55) 0%, rgba(195,145,125,0.32) 26%, rgba(150,105,90,0.12) 62%, transparent 100%)' }}
-          animate={{ opacity: [0.8, 1, 0.85, 1, 0.8] }}
+          className="absolute"
+          style={col(42, 400, 'linear-gradient(to top, rgba(255,190,90,1) 0%, rgba(255,150,50,0.95) 30%, rgba(255,120,30,0.65) 62%, rgba(255,110,24,0.18) 100%)')}
+          animate={{ opacity: [0.85, 1, 0.9, 1, 0.85] }}
           transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
         />
+        {/* 5 - white-hot core */}
+        <motion.div
+          className="absolute"
+          style={col(20, 330, 'linear-gradient(to top, #fff 0%, #fff6dc 22%, #ffdca0 48%, rgba(255,184,100,0.7) 74%, rgba(255,150,60,0.12) 100%)')}
+          animate={{ opacity: [0.9, 1, 0.92, 1, 0.9], scaleX: [1, 1.15, 0.95, 1.08, 1] }}
+          transition={{ duration: 1.9, repeat: Infinity, ease: 'easeInOut' }}
+        />
       </motion.div>
+
+      {/* 6 - bright flare where the beam meets the dashboard */}
+      <motion.div
+        className="absolute"
+        style={{ left: -110, top: -78, width: 220, height: 96, ...BLEND, background: 'radial-gradient(ellipse 50% 100% at 50% 100%, rgba(255,236,190,0.95) 0%, rgba(255,160,60,0.8) 28%, rgba(255,100,20,0.4) 58%, transparent 100%)' }}
+        animate={{ opacity: [0.85, 1, 0.9, 1, 0.85] }}
+        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+      />
 
       {/* embers drifting up the beam */}
       {EMBERS.map((e, i) => (
         <motion.span
           key={i}
-          className="absolute left-1/2 rounded-full bg-[#ffd9a0]"
-          style={{ marginLeft: e.x, width: e.s, height: e.s, boxShadow: '0 0 6px 1px rgba(255,160,70,0.8)' }}
-          initial={{ bottom: 0, opacity: 0 }}
-          animate={{ bottom: [0, 400], x: [0, e.drift], opacity: [0, 0.8, 0.7, 0] }}
+          className="absolute rounded-full bg-[#ffd9a0]"
+          style={{ left: e.x, top: 0, width: e.s, height: e.s, boxShadow: '0 0 6px 1px rgba(255,160,70,0.8)' }}
+          initial={{ y: 0, opacity: 0 }}
+          animate={{ y: [0, -380], x: [0, e.drift], opacity: [0, 0.8, 0.7, 0] }}
           transition={{ duration: e.d, repeat: Infinity, delay: e.t, ease: 'easeOut' }}
         />
       ))}
@@ -167,13 +186,56 @@ export function VerticalBeam() {
   )
 }
 
-/** Soft orange light hugging the dashboard's left or right edge (design Rectangle 32 / 34). Pure gradients, no blur filter. */
-export function EdgeGlow({ side }: { side: 'left' | 'right' }) {
+/** Light the beam throws onto the dashboard's top edge. It is centred on the edge (half over the dashboard, half above it),
+ *  stays within the dashboard's width, and every gradient reaches zero before its box ends, so nothing is cut off or spills far away.
+ *  Coordinates are relative to the dashboard wrapper (910px wide in the design). */
+export function DashboardGlow() {
   return (
-    <div
-      aria-hidden="true"
-      className={`pointer-events-none absolute top-[-26px] hidden h-[446px] w-[110px] lg:block ${side === 'left' ? '-left-[56px]' : '-right-[56px]'}`}
-      style={{ ...mask(SOFT_Y), background: `linear-gradient(to ${side === 'left' ? 'right' : 'left'}, transparent 0%, rgba(242,72,0,0.1) 25%, rgba(242,72,0,0.34) 50%, rgba(242,72,0,0.4) 56%, rgba(242,72,0,0.14) 72%, transparent 100%)` }}
-    />
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 hidden lg:block">
+      {/* broad, dim wash under the top glow so the gap above the dashboard is not left black */}
+      <motion.div
+        className="absolute"
+        style={{ left: -60, top: -120, width: 1030, height: 190, ...BLEND, background: 'radial-gradient(ellipse 50% 50% at 50% 55%, rgba(242,72,0,0.24) 0%, rgba(242,72,0,0.12) 45%, rgba(242,72,0,0.04) 75%, transparent 100%)' }}
+        animate={{ opacity: [0.8, 1, 0.85, 1, 0.8] }}
+        transition={{ duration: 5.2, repeat: Infinity, ease: 'easeInOut' }}
+      />
+      {/* tight, bright pool around the beam */}
+      <motion.div
+        className="absolute"
+        style={{ left: 603 - 260, top: -88, width: 520, height: 120, ...BLEND, background: 'radial-gradient(ellipse 50% 50% at 50% 50%, rgba(255,140,40,0.7) 0%, rgba(255,104,22,0.42) 32%, rgba(242,72,0,0.15) 64%, transparent 100%)' }}
+        animate={{ opacity: [0.85, 1, 0.9, 1, 0.85] }}
+        transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }}
+      />
+      {/* softer glow along the whole top edge, a little wider than the dashboard */}
+      <motion.div
+        className="absolute"
+        style={{ left: -30, top: -62, width: 970, height: 68, ...BLEND, background: 'radial-gradient(ellipse 50% 50% at 50% 50%, rgba(242,72,0,0.34) 0%, rgba(242,72,0,0.16) 50%, transparent 100%)' }}
+        animate={{ opacity: [0.75, 1, 0.8, 0.95, 0.75] }}
+        transition={{ duration: 4.8, repeat: Infinity, ease: 'easeInOut' }}
+      />
+    </div>
+  )
+}
+
+/** Faint orange light centred on the dashboard's left and right side edges (design Rectangle 32 / 34):
+ *  it sits both behind and in front of the edge, so it reads as light, not as a border. */
+export function SideGlow() {
+  const fade = 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.55) 14%, #000 32%, #000 62%, rgba(0,0,0,0.5) 84%, transparent 100%)'
+  return (
+    <>
+      {(['left', 'right'] as const).map((side) => (
+        <div
+          key={side}
+          aria-hidden="true"
+          className="pointer-events-none absolute z-20 hidden h-[470px] w-[120px] lg:block"
+          style={{ top: -50, [side]: -60, ...mask(fade) }}
+        >
+          <div
+            className="size-full"
+            style={{ ...BLEND, ...mask(SOFT_X), background: 'linear-gradient(to bottom, rgba(242,72,0,0.4), rgba(242,72,0,0.4))' }}
+          />
+        </div>
+      ))}
+    </>
   )
 }
